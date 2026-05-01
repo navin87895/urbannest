@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UrbanNest | Premium Real Estate Advisory Demo</title>
+  <meta name="description" content="A premium, interactive real estate advisory demo for UrbanNest with backend enquiries, sliders and motion UI.">
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="boot-loader" data-loader>
+    <div class="loader-card">
+      <div class="loader-mark">UN</div>
+      <p>Preparing curated NCR opportunities</p>
+      <span></span>
+    </div>
+  </div>
+
+  <div class="startup-popup is-open" data-startup-popup aria-hidden="false">
+    <div class="popup-scrim" data-close-startup></div>
+    <form class="startup-card" data-popup-form>
+      <button class="popup-close" type="button" aria-label="Close popup" data-close-startup>
+        <i data-lucide="x"></i>
+      </button>
+      <div class="mini-logo">
+        <span>UN</span>
+        <strong>UrbanNest</strong>
+        <small>SMART PROPERTY ADVICE</small>
+      </div>
+      <h2>Find your best-fit property in 24 hours.</h2>
+      <p>Residential, commercial, finance and interiors guidance from one advisory desk.</p>
+      <input name="name" type="text" placeholder="Enter Name" required>
+      <input name="email" type="email" placeholder="Enter Email">
+      <input name="phone" type="tel" placeholder="Your Mobile No." required>
+      <textarea name="message" rows="3" placeholder="Message"></textarea>
+      <button class="btn gold" type="submit">Send Message</button>
+      <small data-popup-status></small>
+    </form>
+  </div>
+
+  <header class="site-header is-hero" data-header>
+    <a class="logo" href="#top" aria-label="Home">
+      <span class="logo-icon">UN</span>
+      <span>
+        <strong>UrbanNest</strong>
+        <small>SMART PROPERTY ADVICE</small>
+      </span>
+    </a>
+    <nav class="desktop-nav" aria-label="Primary">
+      <a href="#top">Home</a>
+      <a href="#who">Who We Are</a>
+      <a href="#projects">Projects</a>
+      <a href="#flow">Flow</a>
+      <a href="#partners">Builders</a>
+      <a href="#loan">Loan</a>
+      <a href="#interiors">Interiors</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#blog">Blog</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="call-pill" href="tel:+918447383836">
+      <i data-lucide="phone-call"></i>
+      +91-8447383836
+    </a>
+    <button class="menu-btn" type="button" aria-label="Open menu" data-menu-btn>
+      <i data-lucide="menu"></i>
+    </button>
+  </header>
+
+  <div class="mobile-panel" data-mobile-panel>
+    <a href="#top">Home</a>
+    <a href="#who">Who We Are</a>
+    <a href="#projects">Projects</a>
+    <a href="#flow">Flow</a>
+    <a href="#partners">Builders</a>
+    <a href="#loan">Loan</a>
+    <a href="#interiors">Interiors</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <nav class="side-rail" data-side-rail aria-label="Section navigation">
+    <a href="#top" aria-label="Home"><span></span><b>Home</b></a>
+    <a href="#who" aria-label="Who We Are"><span></span><b>Who</b></a>
+    <a href="#flow" aria-label="Consultation Flow"><span></span><b>Flow</b></a>
+    <a href="#projects" aria-label="Projects"><span></span><b>Projects</b></a>
+    <a href="#partners" aria-label="Builders"><span></span><b>Builders</b></a>
+    <a href="#contact" aria-label="Contact"><span></span><b>Contact</b></a>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <video class="hero-video" autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2200&q=85">
+        <source src="https://videos.pexels.com/video-files/3129957/3129957-uhd_2560_1440_25fps.mp4" type="video/mp4">
+      </video>
+      <div class="hero-shade"></div>
+      <div class="hero-inner motion-rise">
+        <p class="hero-kicker">Guiding you through all your real estate needs</p>
+        <h1>Your ideal real estate journey begins with us.</h1>
+        <div class="hero-actions">
+          <a class="category-chip active" href="#projects"><i data-lucide="home"></i>Residential</a>
+          <a class="category-chip" href="#projects"><i data-lucide="building-2"></i>Commercial</a>
+          <a class="category-chip" href="#loan"><i data-lucide="briefcase-business"></i>Finance</a>
+          <a class="category-chip" href="#interiors"><i data-lucide="landmark"></i>Interior Design</a>
+        </div>
+      </div>
+      <aside class="hero-dashboard" aria-label="Advisory highlights">
+        <div class="dash-card hot">
+          <span>Live Advisory Desk</span>
+          <strong>24h</strong>
+          <small>shortlist turnaround</small>
+        </div>
+        <div class="dash-card">
+          <span>Best Fit Score</span>
+          <strong>92%</strong>
+          <small>Noida Expressway commercial</small>
+        </div>
+        <div class="dash-mini">
+          <span>Loan ready</span>
+          <b>8 banks</b>
+        </div>
+        <div class="dash-mini">
+          <span>Interior scope</span>
+          <b>12 zones</b>
+        </div>
+      </aside>
+      <p class="hero-quote">"Fidelity. Credibility. Honesty. But redesigned for a digital-first buyer."</p>
+      <div class="floating-enquiry" data-open-startup>
+        <i data-lucide="sparkles"></i>
+      </div>
+    </section>
+
+    <section class="quick-search motion-rise">
+      <div>
+        <label>Location</label>
+        <select data-filter="location">
+          <option value="all">All prime corridors</option>
+          <option value="noida">Noida</option>
+          <option value="greater-noida">Greater Noida</option>
+          <option value="expressway">Noida Expressway</option>
+          <option value="ghaziabad">Ghaziabad</option>
+        </select>
+      </div>
+      <div>
+        <label>Property Type</label>
+        <select data-filter="type">
+          <option value="all">Any property</option>
+          <option value="residential">Residential</option>
+          <option value="commercial">Commercial</option>
+        </select>
+      </div>
+      <div>
+        <label>Budget</label>
+        <select data-filter="budget">
+          <option value="all">Any budget</option>
+          <option value="mid">Under 1 Cr</option>
+          <option value="premium">1 Cr to 3 Cr</option>
+          <option value="luxury">3 Cr plus</option>
+        </select>
+      </div>
+      <button class="btn ink" type="button" data-reset-filters><i data-lucide="sliders-horizontal"></i>Reset Search</button>
+    </section>
+
+    <section class="market-studio motion-rise" aria-label="Market intelligence studio">
+      <div class="studio-copy">
+        <div class="section-label">Smart Advisory Layer</div>
+        <h2>Maximized view for buyers, investors and families.</h2>
+        <p>Use the demo like a property command room: scan demand, compare corridors, launch enquiries and move between residential, commercial, finance and interiors without losing context.</p>
+      </div>
+      <div class="studio-grid">
+        <article>
+          <i data-lucide="radar"></i>
+          <span>Corridor Radar</span>
+          <strong>Expressway</strong>
+          <small>High-interest commercial belt</small>
+        </article>
+        <article>
+          <i data-lucide="badge-indian-rupee"></i>
+          <span>Budget Fit</span>
+          <strong>1-3 Cr</strong>
+          <small>Premium residential sweet spot</small>
+        </article>
+        <article>
+          <i data-lucide="route"></i>
+          <span>Visit Plan</span>
+          <strong>3 stops</strong>
+          <small>Optimized same-day route</small>
+        </article>
+      </div>
+    </section>
+
+    <section class="about-supreme" id="who">
+      <div class="about-copy">
+        <div class="section-label">Helping People to Find The Right Property</div>
+        <h2>UrbanNest turns property search into a calm, clear decision.</h2>
+        <p>Our motto is fidelity, credibility and honesty. We identify the best possible opportunities, explain the tradeoffs, and help clients choose with confidence.</p>
+        <div class="about-feature">
+          <i data-lucide="home"></i>
+          <div>
+            <h3>Hassle-Free Financing</h3>
+            <p>Easy and straightforward financing guidance, bank comparison and document support.</p>
+          </div>
+        </div>
+        <div class="about-feature">
+          <i data-lucide="shield-check"></i>
+          <div>
+            <h3>Reliable Among Thousands</h3>
+            <p>Trusted advisory systems for residential, commercial, interiors and post-purchase support.</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-collage" aria-label="UrbanNest property advisory visuals">
+        <img class="collage-main" src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=1100&q=85" alt="Modern city towers through an open doorway">
+        <img src="https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&w=800&q=85" alt="Real estate model in hands">
+        <img src="https://images.unsplash.com/photo-1560440021-33f9b867899d?auto=format&fit=crop&w=800&q=85" alt="House keys">
+      </div>
+    </section>
+
+    <section class="section about">
+      <div class="about-grid compact">
+        <div>
+          <div class="section-label">UrbanNest Advantage</div>
+          <h2>Not a listing dump. A guided property command center.</h2>
+          <p>UrbanNest brings property discovery, finance, interiors, builder confidence and enquiry capture into one fluid experience.</p>
+        </div>
+        <div class="stat-board">
+          <div><strong data-count="120">0</strong><span>Curated opportunities</span></div>
+          <div><strong data-count="38">0</strong><span>Builder partners</span></div>
+          <div><strong data-count="14">0</strong><span>Years advisory depth</span></div>
+          <div><strong data-count="950">0</strong><span>Happy customers</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="consultation-flow" id="flow">
+      <div class="flow-intro">
+        <span>01</span>
+        <div>
+          <div class="section-label">Consultation Flow</div>
+          <h2>From first call to final handover, every step stays visible.</h2>
+        </div>
+      </div>
+      <div class="flow-grid">
+        <article>
+          <span>02</span>
+          <h3>Requirement Map</h3>
+          <p>Budget, timeline, purpose, preferred sectors and financing fit.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Curated Options</h3>
+          <p>Shortlist with location logic, builder track record and project tradeoffs.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Site Visits</h3>
+          <p>Guided visits, comparison notes, availability checks and negotiation support.</p>
+        </article>
+        <article>
+          <span>05</span>
+          <h3>Closure Support</h3>
+          <p>Loan coordination, paperwork, registry guidance and post-purchase services.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section service-lanes">
+      <div class="section-label">Find our top service areas</div>
+      <h2>Four high-conversion lanes from the reference, upgraded.</h2>
+      <div class="lane-grid">
+        <article class="lane residential">
+          <i data-lucide="home"></i>
+          <h3>Residential Projects</h3>
+          <p>Apartments, luxury residences, plotted options and family-first communities.</p>
+          <a href="#projects">Explore More</a>
+        </article>
+        <article class="lane commercial">
+          <i data-lucide="building"></i>
+          <h3>Commercial Projects</h3>
+          <p>Retail, offices, studios, food courts and long-term investment corridors.</p>
+          <a href="#projects">Explore More</a>
+        </article>
+        <article class="lane interior" id="interiors">
+          <i data-lucide="sofa"></i>
+          <h3>Interior Design</h3>
+          <p>Master bedrooms, modular kitchens, wardrobes, TV units and move-in finishing.</p>
+          <a href="#contact">Explore More</a>
+        </article>
+        <article class="lane finance" id="loan">
+          <i data-lucide="landmark"></i>
+          <h3>Loan Services</h3>
+          <p>Eligibility, documents, bank comparison and disbursement support.</p>
+          <a href="#contact">Explore More</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section projects" id="projects">
+      <div class="section-head">
+        <div>
+          <div class="section-label">Featured Properties</div>
+          <h2>Drag, filter and compare investment-ready projects.</h2>
+        </div>
+        <div class="slider-controls">
+          <button type="button" data-slide-prev aria-label="Previous"><i data-lucide="arrow-left"></i></button>
+          <button type="button" data-slide-next aria-label="Next"><i data-lucide="arrow-right"></i></button>
+        </div>
+      </div>
+
+      <div class="project-rail" data-project-rail>
+        <article class="project-card" data-location="noida" data-type="commercial" data-budget="premium">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80" alt="Commercial tower">
+          <div><span>Commercial / For Sell</span><h3>Anthurium</h3><p>Sector 73, Noida</p><small>Retail shops and offices</small><button data-enquiry="Anthurium">Enquiry for Price</button></div>
+        </article>
+        <article class="project-card" data-location="noida" data-type="commercial" data-budget="premium">
+          <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80" alt="Office lobby">
+          <div><span>Commercial / For Sell</span><h3>Ithum 73</h3><p>Sector 73, Noida</p><small>Retail shops and offices</small><button data-enquiry="Ithum 73">Enquiry for Price</button></div>
+        </article>
+        <article class="project-card" data-location="ghaziabad" data-type="residential" data-budget="premium">
+          <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80" alt="Luxury living room">
+          <div><span>Residential / For Sell</span><h3>The Prestige City</h3><p>NH24, Ghaziabad</p><small>2, 3, 4 and 5 BHK</small><button data-enquiry="The Prestige City">Enquiry for Price</button></div>
+        </article>
+        <article class="project-card" data-location="greater-noida" data-type="residential" data-budget="mid">
+          <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80" alt="Residential buildings">
+          <div><span>Residential / For Sell</span><h3>Sobha Aurum</h3><p>Sector 63, Greater Noida</p><small>1, 2, 3 and 4 BHK</small><button data-enquiry="Sobha Aurum">Enquiry for Price</button></div>
+        </article>
+        <article class="project-card" data-location="expressway" data-type="commercial" data-budget="luxury">
+          <img src="https://images.unsplash.com/photo-1518005020951-eccb494ad742?auto=format&fit=crop&w=900&q=80" alt="Commercial architecture">
+          <div><span>Commercial / For Sell</span><h3>Dasnac Arc</h3><p>Sector 72, Noida</p><small>Studios, retail offices, food court</small><button data-enquiry="Dasnac Arc">Enquiry for Price</button></div>
+        </article>
+        <article class="project-card" data-location="expressway" data-type="residential" data-budget="luxury">
+          <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80" alt="Apartment interior">
+          <div><span>Residential / Luxury</span><h3>Dasnac Westminster</h3><p>Sector 146, Noida Expressway</p><small>Large 4 BHK residences</small><button data-enquiry="Dasnac Westminster">Enquiry for Price</button></div>
+        </article>
+      </div>
+      <p class="empty" data-empty>No matching projects found. Reset the filters for the full inventory.</p>
+    </section>
+
+    <section class="builder-band" id="partners">
+      <div class="builder-title">
+        <span>Our Builders</span>
+        <h2>The Builders We Are Working With</h2>
+      </div>
+      <div class="builder-grid" aria-label="Builder partners">
+        <article><strong>RG Group</strong><small>Trusted NCR Developer</small></article>
+        <article><strong>ATS</strong><small>The Better Way Home</small></article>
+        <article><strong>DASNAC</strong><small>Commercial & Residential</small></article>
+        <article><strong>Godrej</strong><small>Properties</small></article>
+        <article><strong>CRC</strong><small>Building Values</small></article>
+        <article><strong>Sikka</strong><small>A Better Tomorrow</small></article>
+        <article><strong>Kalpataru</strong><small>Premium Homes</small></article>
+        <article><strong>Gaurs</strong><small>Your Own World</small></article>
+        <article><strong>Jaypee</strong><small>Greens</small></article>
+        <article><strong>Logix</strong><small>The Life You Deserve</small></article>
+        <article><strong>Eldeco</strong><small>Established Communities</small></article>
+        <article><strong>M3M</strong><small>Our Expertise. Your Joy.</small></article>
+        <article><strong>Mahagun</strong><small>A Name That Performs</small></article>
+        <article><strong>Omaxe</strong><small>Dreams Into Reality</small></article>
+        <article><strong>Trehan Iris</strong><small>Retail & Commercial</small></article>
+      </div>
+    </section>
+
+    <section class="section gallery" id="gallery">
+      <div class="section-label">Gallery</div>
+      <h2>Visual routes for every buyer intent.</h2>
+      <div class="gallery-grid">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80" alt="Modern home">
+        <img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=900&q=80" alt="Interior">
+        <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=80" alt="Office">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80" alt="Apartment">
+      </div>
+    </section>
+
+    <section class="testimonials">
+      <div class="section-label">Fake Testimonials for Demo</div>
+      <h2>What clients would say in this polished version.</h2>
+      <div class="testimonial-slider" data-testimonial-slider>
+        <article class="review active">
+          <p>"The shortlist felt honest. We compared three projects, understood the tradeoffs and booked without confusion."</p>
+          <strong>Vibhakar</strong><span>New Delhi</span>
+        </article>
+        <article class="review">
+          <p>"The team handled site visits, loan coordination and negotiations with a level of polish I did not expect."</p>
+          <strong>Vishal Singh</strong><span>Noida</span>
+        </article>
+        <article class="review">
+          <p>"Instead of random listings, we got a clean investment thesis for every commercial option."</p>
+          <strong>Yogesh Sharma</strong><span>Noida</span>
+        </article>
+      </div>
+      <div class="review-dots" data-review-dots></div>
+    </section>
+
+    <section class="section editorial" id="blog">
+      <div class="section-label">Blog</div>
+      <h2>High-intent insights for property buyers.</h2>
+      <div class="blog-grid">
+        <article><span>Commercial</span><h3>Best upcoming commercial projects in Noida.</h3><p>How location, catchment and builder delivery shape returns.</p></article>
+        <article><span>Residential</span><h3>Upcoming residential projects in Noida.</h3><p>What to verify before choosing luxury, mid-market or expressway homes.</p></article>
+        <article><span>Jewar Airport</span><h3>Authority plots near growth corridors.</h3><p>Investor-friendly questions before entering plotted development.</p></article>
+      </div>
+    </section>
+
+    <section class="section career-csr">
+      <div id="career"><span>Career</span><h3>Join a high-performance advisory team.</h3><p>Sales, market research, customer success and partnership roles for growth-minded professionals.</p></div>
+      <div id="csr"><span>CSR</span><h3>Responsible advice, responsible growth.</h3><p>Transparent guidance, customer education and community-first property literacy.</p></div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div>
+        <div class="section-label">Contact</div>
+        <h2>Send an enquiry into the working backend.</h2>
+        <p>Submissions are posted to the local Node server and stored in `data/enquiries.json` for demo proof.</p>
+        <a href="tel:+918447383836"><i data-lucide="phone"></i> +91-84473 83836</a>
+        <a href="mailto:hello@urbannest.demo"><i data-lucide="mail"></i> hello@urbannest.demo</a>
+        <span><i data-lucide="map-pin"></i> Indie Workspace, Sector 63, Noida</span>
+      </div>
+      <form class="lead-form" data-lead-form>
+        <input name="name" type="text" placeholder="Enter Name" required>
+        <input name="email" type="email" placeholder="Enter Email">
+        <input name="phone" type="tel" placeholder="Your Mobile No." required>
+        <select name="interest">
+          <option>Residential</option>
+          <option>Commercial</option>
+          <option>Finance</option>
+          <option>Interior Design</option>
+        </select>
+        <textarea name="message" rows="4" placeholder="Message"></textarea>
+        <button class="btn gold" type="submit">Send Message</button>
+        <p data-form-status></p>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="logo footer-logo"><span class="logo-icon">UN</span><span><strong>UrbanNest</strong><small>SMART PROPERTY ADVICE</small></span></div>
+    <p>Premium UrbanNest demo concept. Content, testimonials and partners are sample placeholders for presentation.</p>
+  </footer>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
