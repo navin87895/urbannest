@@ -1,266 +1,120 @@
-const loader = document.querySelector("[data-loader]");
-const startupPopup = document.querySelector("[data-startup-popup]");
-const openStartup = document.querySelector("[data-open-startup]");
-const closeStartupButtons = document.querySelectorAll("[data-close-startup]");
-const popupForm = document.querySelector("[data-popup-form]");
-const popupStatus = document.querySelector("[data-popup-status]");
-const header = document.querySelector("[data-header]");
-const menuButton = document.querySelector("[data-menu-btn]");
-const mobilePanel = document.querySelector("[data-mobile-panel]");
-const rail = document.querySelector("[data-project-rail]");
-const prevButton = document.querySelector("[data-slide-prev]");
-const nextButton = document.querySelector("[data-slide-next]");
-const filterControls = document.querySelectorAll("[data-filter]");
-const resetFilters = document.querySelector("[data-reset-filters]");
-const projectCards = document.querySelectorAll(".project-card");
-const emptyState = document.querySelector("[data-empty]");
-const enquiryButtons = document.querySelectorAll("[data-enquiry]");
-const leadForm = document.querySelector("[data-lead-form]");
-const formStatus = document.querySelector("[data-form-status]");
-const reviews = document.querySelectorAll(".review");
-const reviewDots = document.querySelector("[data-review-dots]");
-const counters = document.querySelectorAll("[data-count]");
-const sideRail = document.querySelector("[data-side-rail]");
-const railLinks = document.querySelectorAll(".side-rail a");
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
 
-if (window.lucide) {
-  window.lucide.createIcons();
-}
+const root = __dirname;
+const dataDir = path.join(root, "data");
+const enquiriesFile = path.join(dataDir, "enquiries.json");
+const port = Number(process.env.PORT || 8080);
 
-if (startupPopup.classList.contains("is-open")) {
-  document.body.classList.add("no-scroll");
-}
-
-let lastScrollY = window.scrollY;
-
-const syncHeader = () => {
-  const currentY = window.scrollY;
-  const scrollingDown = currentY > lastScrollY && currentY > 180;
-  const showRail = currentY > window.innerHeight * 0.45;
-
-  header.classList.toggle("is-scrolled", currentY > 28);
-  header.classList.toggle("is-hidden", scrollingDown);
-  sideRail.classList.toggle("is-visible", showRail);
-  lastScrollY = Math.max(currentY, 0);
+const mimeTypes = {
+  ".html": "text/html; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp"
 };
 
-window.addEventListener("scroll", syncHeader, { passive: true });
-syncHeader();
-
-window.addEventListener("load", () => {
-  setTimeout(() => loader.classList.add("is-hidden"), 650);
-});
-
-const openPopup = () => {
-  startupPopup.classList.add("is-open");
-  startupPopup.setAttribute("aria-hidden", "false");
-  document.body.classList.add("no-scroll");
+const ensureStore = () => {
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+  if (!fs.existsSync(enquiriesFile)) fs.writeFileSync(enquiriesFile, "[]\n");
 };
 
-const closePopup = () => {
-  startupPopup.classList.remove("is-open");
-  startupPopup.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("no-scroll");
-};
-
-openStartup.addEventListener("click", openPopup);
-closeStartupButtons.forEach((button) => button.addEventListener("click", closePopup));
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closePopup();
-});
-
-menuButton.addEventListener("click", () => {
-  mobilePanel.classList.toggle("is-open");
-});
-
-mobilePanel.querySelectorAll("a").forEach((link) => {
-  link.addEventListener("click", () => mobilePanel.classList.remove("is-open"));
-});
-
-let dragActive = false;
-let dragStartX = 0;
-let scrollStart = 0;
-
-rail.addEventListener("pointerdown", (event) => {
-  dragActive = true;
-  dragStartX = event.clientX;
-  scrollStart = rail.scrollLeft;
-  rail.classList.add("dragging");
-  rail.setPointerCapture(event.pointerId);
-});
-
-rail.addEventListener("pointermove", (event) => {
-  if (!dragActive) return;
-  rail.scrollLeft = scrollStart - (event.clientX - dragStartX);
-});
-
-const stopDrag = () => {
-  dragActive = false;
-  rail.classList.remove("dragging");
-};
-
-rail.addEventListener("pointerup", stopDrag);
-rail.addEventListener("pointercancel", stopDrag);
-rail.addEventListener("pointerleave", stopDrag);
-
-prevButton.addEventListener("click", () => rail.scrollBy({ left: -420, behavior: "smooth" }));
-nextButton.addEventListener("click", () => rail.scrollBy({ left: 420, behavior: "smooth" }));
-
-const getFilters = () => {
-  return Array.from(filterControls).reduce((acc, control) => {
-    acc[control.dataset.filter] = control.value;
-    return acc;
-  }, {});
-};
-
-const applyFilters = () => {
-  const filters = getFilters();
-  let visible = 0;
-
-  projectCards.forEach((card) => {
-    const match = Object.entries(filters).every(([key, value]) => {
-      return value === "all" || card.dataset[key] === value;
+const readBody = (request) => {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    request.on("data", (chunk) => {
+      body += chunk;
+      if (body.length > 1_000_000) {
+        request.destroy();
+        reject(new Error("Payload too large"));
+      }
     });
-    card.classList.toggle("is-hidden", !match);
-    if (match) visible += 1;
+    request.on("end", () => resolve(body));
+    request.on("error", reject);
   });
-
-  emptyState.classList.toggle("is-visible", visible === 0);
 };
 
-filterControls.forEach((control) => control.addEventListener("change", applyFilters));
-resetFilters.addEventListener("click", () => {
-  filterControls.forEach((control) => {
-    control.value = "all";
-  });
-  applyFilters();
-});
+const sendJson = (response, status, payload) => {
+  response.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
+  response.end(JSON.stringify(payload));
+};
 
-enquiryButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    openPopup();
-    popupForm.elements.message.value = `Interested in ${button.dataset.enquiry}. Please share pricing and availability.`;
-  });
-});
-
-const postLead = async (form, statusElement) => {
-  const data = Object.fromEntries(new FormData(form).entries());
-  statusElement.textContent = "Sending...";
-
+const saveEnquiry = async (request, response) => {
   try {
-    const response = await fetch("/api/enquiries", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
-    });
+    ensureStore();
+    const body = await readBody(request);
+    const payload = JSON.parse(body || "{}");
 
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || "Request failed");
+    if (!payload.name || !payload.phone) {
+      sendJson(response, 400, { error: "Name and phone are required." });
+      return;
+    }
 
-    statusElement.textContent = `Saved enquiry #${result.id}. Backend is working.`;
-    form.reset();
-    return true;
+    const enquiries = JSON.parse(fs.readFileSync(enquiriesFile, "utf8"));
+    const enquiry = {
+      id: enquiries.length + 1,
+      name: String(payload.name).trim(),
+      email: String(payload.email || "").trim(),
+      phone: String(payload.phone).trim(),
+      interest: String(payload.interest || "Website popup").trim(),
+      message: String(payload.message || "").trim(),
+      createdAt: new Date().toISOString()
+    };
+
+    enquiries.push(enquiry);
+    fs.writeFileSync(enquiriesFile, JSON.stringify(enquiries, null, 2));
+    sendJson(response, 201, enquiry);
   } catch (error) {
-    statusElement.textContent = "Backend not reachable yet. Run with node server.js.";
-    return false;
+    sendJson(response, 500, { error: "Unable to save enquiry." });
   }
 };
 
-popupForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const sent = await postLead(popupForm, popupStatus);
-  if (sent) setTimeout(closePopup, 900);
-});
+const serveStatic = (request, response) => {
+  const requestUrl = new URL(request.url, `http://${request.headers.host}`);
+  const cleanPath = decodeURIComponent(requestUrl.pathname === "/" ? "/index.html" : requestUrl.pathname);
+  const filePath = path.normalize(path.join(root, cleanPath));
 
-leadForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  await postLead(leadForm, formStatus);
-});
+  if (!filePath.startsWith(root)) {
+    response.writeHead(403);
+    response.end("Forbidden");
+    return;
+  }
 
-reviews.forEach((_, index) => {
-  const dot = document.createElement("button");
-  dot.type = "button";
-  dot.setAttribute("aria-label", `Show testimonial ${index + 1}`);
-  dot.addEventListener("click", () => setReview(index));
-  reviewDots.appendChild(dot);
-});
+  fs.readFile(filePath, (error, content) => {
+    if (error) {
+      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
+      response.end("Not found");
+      return;
+    }
 
-const dots = reviewDots.querySelectorAll("button");
-let activeReview = 0;
-
-const setReview = (index) => {
-  reviews[activeReview].classList.remove("active");
-  dots[activeReview].classList.remove("active");
-  activeReview = index;
-  reviews[activeReview].classList.add("active");
-  dots[activeReview].classList.add("active");
+    response.writeHead(200, {
+      "Content-Type": mimeTypes[path.extname(filePath)] || "application/octet-stream"
+    });
+    response.end(content);
+  });
 };
 
-setReview(0);
-setInterval(() => setReview((activeReview + 1) % reviews.length), 4800);
+const server = http.createServer((request, response) => {
+  if (request.method === "POST" && request.url === "/api/enquiries") {
+    saveEnquiry(request, response);
+    return;
+  }
 
-const countObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    const counter = entry.target;
-    const end = Number(counter.dataset.count);
-    const start = performance.now();
+  if (request.method === "GET") {
+    serveStatic(request, response);
+    return;
+  }
 
-    const tick = (now) => {
-      const progress = Math.min((now - start) / 1400, 1);
-      counter.textContent = Math.floor(end * progress).toLocaleString();
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-
-    requestAnimationFrame(tick);
-    countObserver.unobserve(counter);
-  });
-}, { threshold: 0.5 });
-
-counters.forEach((counter) => countObserver.observe(counter));
-
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    entry.target.animate(
-      [
-        { opacity: 0, transform: "translateY(32px)" },
-        { opacity: 1, transform: "translateY(0)" }
-      ],
-      { duration: 700, easing: "cubic-bezier(.16, 1, .3, 1)", fill: "both" }
-    );
-    revealObserver.unobserve(entry.target);
-  });
-}, { threshold: 0.14 });
-
-document.querySelectorAll(".section, .builder-band, .testimonials, .contact").forEach((section) => {
-  revealObserver.observe(section);
+  response.writeHead(405);
+  response.end("Method not allowed");
 });
 
-const sectionObserver = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (!entry.isIntersecting) return;
-    const id = entry.target.id || "top";
-
-    railLinks.forEach((link) => {
-      link.classList.toggle("is-active", link.getAttribute("href") === `#${id}`);
-    });
-  });
-}, { rootMargin: "-42% 0px -48% 0px", threshold: 0.01 });
-
-["top", "who", "flow", "projects", "partners", "contact"].forEach((id) => {
-  const section = document.getElementById(id);
-  if (section) sectionObserver.observe(section);
+ensureStore();
+server.listen(port, "0.0.0.0", () => {
+  console.log(`UrbanNest demo running at http://127.0.0.1:${port}`);
 });
-
-import("https://cdn.jsdelivr.net/npm/motion@latest/+esm")
-  .then(({ animate, inView, stagger }) => {
-    animate(".category-chip", { y: [20, 0], opacity: [0, 1] }, { delay: stagger(0.08), duration: 0.7 });
-    inView(".project-card", (element) => {
-      animate(element, { scale: [0.96, 1], opacity: [0, 1] }, { duration: 0.55 });
-    });
-  })
-  .catch(() => {
-    console.info("Motion CDN unavailable; native animations are active.");
-  });
