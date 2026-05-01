@@ -45,6 +45,7 @@ i[data-lucide] { width: 20px; height: 20px; flex: 0 0 auto; }
   background: #070a12;
   color: white;
   transition: opacity 500ms ease, visibility 500ms ease;
+  animation: loaderFailsafe 2600ms ease forwards;
 }
 .boot-loader.is-hidden { opacity: 0; visibility: hidden; }
 .loader-card {
@@ -1202,6 +1203,10 @@ footer p { max-width: 640px; }
   50% { transform: scaleX(1); transform-origin: left; }
   51% { transform-origin: right; }
   100% { transform: scaleX(.18); transform-origin: right; }
+}
+@keyframes loaderFailsafe {
+  0%, 82% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; pointer-events: none; }
 }
 @keyframes pulse {
   0%, 100% { transform: translateX(0); }
